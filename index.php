@@ -150,6 +150,8 @@
                                     $attendanceID = $row["tbl_attendance_id"];
                                     $studentName = $row["student_name"];
                                     $studentCourse = $row["course_section"];
+                                    $studentEmail = $row["course_email"];
+
                                     $timeIn = $row["time_in"];
                                 ?>
 
@@ -157,6 +159,8 @@
                                     <th scope="row"><?= $attendanceID ?></th>
                                     <td><?= $studentName ?></td>
                                     <td><?= $studentCourse ?></td>
+                                    <td><?= $studentEmail ?></td>
+
                                     <td><?= $timeIn ?></td>
                                     <td>
                                         <div class="action-button">

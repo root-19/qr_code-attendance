@@ -134,6 +134,8 @@
                                     $studentID = $row["tbl_student_id"];
                                     $studentName = $row["student_name"];
                                     $studentCourse = $row["course_section"];
+                                    $studentEmail = $row["course_email"];
+
                                   
 
                                     $qrCode = $row["generated_code"];
@@ -142,7 +144,7 @@
                                 <tr>
                                     <th scope="row" id="studentID-<?= $studentID ?>"><?= $studentID ?></th>
                                     <td id="studentName-<?= $studentID ?>"><?= $studentName ?></td>
-                                   
+                                   <td id="email-<?= $studentID ?>"><?= $studentEmail ?></td>
                                     <td id="studentCourse-<?= $studentID ?>"><?= $studentCourse ?></td>
                                     <td>
                                         <div class="action-button">
@@ -205,6 +207,10 @@
                             <label for="studentCourse">Course and Section:</label>
                             <input type="text" class="form-control" id="studentCourse" name="course_section">
                         </div>
+                        <div class="form-group">
+                            <label for="studentName">Your Email:</label>
+                            <input type="text" class="form-control" id="studentEmail" name="course_email">
+                        </div>
 
                         <button type="button" class="btn btn-secondary form-control qr-generator" onclick="generateQrCode()">Generate QR Code</button>
 
@@ -213,6 +219,7 @@
                             <p>Take a pic with your qr code.</p>
                             <img class="mb-4" src="" id="qrImg" alt="">
                         </div>
+                     
                         <div class="modal-footer modal-close" style="display: none;">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-dark">Add List</button>
@@ -243,6 +250,10 @@
                         <div class="form-group">
                             <label for="updateStudentCourse">Course and Section:</label>
                             <input type="text" class="form-control" id="updateStudentCourse" name="course_section">
+                        </div>
+                          <div class="form-group">
+                            <label for="studentName">Your Email:</label>
+                            <input type="text" class="form-control" id="updateStudentEmail" name="course_email">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -279,9 +290,12 @@
             let updateStudentId = $("#studentID-" + id).text();
             let updateStudentName = $("#studentName-" + id).text();
             let updateStudentCourse = $("#studentCourse-" + id).text();
+            let updateStudentEmail = $("#-" + id).text();
+
 
             $("#updateStudentId").val(updateStudentId);
             $("#updateStudentName").val(updateStudentName);
+            $("#updateStudentEmail").val(email);
             $("#updateStudentCourse").val(updateStudentCourse);
         }
 

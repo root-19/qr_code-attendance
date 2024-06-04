@@ -16,14 +16,14 @@ if (isset($_GET['student'])) {
             echo "
                 <script>
                     alert('Student deleted successfully!');
-                    window.location.href = 'http://localhost/qr-code-attendance-system/masterlist.php';
+                 //window.location.href = 'http://localhost/qr-code-attendance-system/masterlist.php';
                 </script>
             ";
         } else {
             echo "
                 <script>
                     alert('Failed to delete student!');
-                    window.location.href = 'http://localhost/qr-code-attendance-system/masterlist.php';
+                   // window.location.href = 'http://localhost/qr-code-attendance-system/masterlist.php';
                 </script>
             ";
         }
