@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <script>
                 alert('Please fill in all fields!');
                 window.location.href = 'http://localhost/qr-code-attendance-system/index.php';
-               //qipc vais smfq rwim'
+             
                 </script>";
     }
 }
