@@ -1,15 +1,17 @@
-<!DOCTYPE html>
+<!DOCTTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Attendance System</title>
+      <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
     <!-- Data Table -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
@@ -59,50 +61,52 @@
         table.dataTable thead > tr > th.sorting, table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting_asc_disabled, table.dataTable thead > tr > th.sorting_desc_disabled, table.dataTable thead > tr > td.sorting, table.dataTable thead > tr > td.sorting_asc, table.dataTable thead > tr > td.sorting_desc, table.dataTable thead > tr > td.sorting_asc_disabled, table.dataTable thead > tr > td.sorting_desc_disabled {
             text-align: center;
         }
-           nav{
-            background-color: #16a34a;
-        }
+       
         li a{
-            color: #020617;
+            color:#f8fafc;
             font-style: bold;
             font-size: 1.2rem
         }
         li a:hover{
-            color: #020617;
+            color:#f8fafc;
         }
         p{
              color: #020617;
             font-style: bold;
             font-size: 2rem
         }
+        nav{
+            background-color:#020617;
+        }
+        .text, a{
+            color:#f8fafc;
+
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg ">
-        <p>QR Code Attendance System</p>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+       <nav class="p-4 flex items-center justify-between">
+        <p class="text">QR Code Attendance System</p>
+        <button class="text-black md:hidden" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
+        <div class="hidden md:flex" id="navbarSupportedContent">
+            <ul class="flex space-x-4">
+                <li class="nav-item active">
                     <a class="nav-link" href="./index.php">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="./masterlist.php">List of Students</a>
                 </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item mr-3">
-                    <a class="nav-link" href="#">Logout</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="./timeout.php">Time Out</a>
                 </li>
             </ul>
         </div>
     </nav>
 
     <div class="main">
-        
         <div class="student-container">
             <div class="student-list">
                 <div class="title">
@@ -121,30 +125,22 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             <?php 
                                 include ('./conn/conn.php');
-
                                 $stmt = $conn->prepare("SELECT * FROM tbl_student");
                                 $stmt->execute();
-                
                                 $result = $stmt->fetchAll();
-                
+
                                 foreach ($result as $row) {
                                     $studentID = $row["tbl_student_id"];
                                     $studentName = $row["student_name"];
                                     $studentCourse = $row["course_section"];
-                                    $studentEmail = $row["course_email"];
-
-                                  
-
                                     $qrCode = $row["generated_code"];
                                 ?>
 
                                 <tr>
                                     <th scope="row" id="studentID-<?= $studentID ?>"><?= $studentID ?></th>
                                     <td id="studentName-<?= $studentID ?>"><?= $studentName ?></td>
-                                   <td id="email-<?= $studentID ?>"><?= $studentEmail ?></td>
                                     <td id="studentCourse-<?= $studentID ?>"><?= $studentCourse ?></td>
                                     <td>
                                         <div class="action-button">
@@ -154,22 +150,21 @@
                                             <div class="modal fade" id="qrCodeModal<?= $studentID ?>" tabindex="-1" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title"><?= $studentName ?>'s QR Code</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body text-center">
-                                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?= $qrCode ?>" alt="" width="300">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                 <button type="button" class="btn btn-primary" onclick="window.print()">Print QR Code</button>
-                                                    </div>
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"><?= $studentName ?>'s QR Code</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body text-center">
+                                                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?= $qrCode ?>" alt="" width="300">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-primary" onclick="window.print()">Print QR Code</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <button class="btn btn-secondary btn-sm" onclick="updateStudent(<?= $studentID ?>)">&#128393;</button>
                                             <button class="btn btn-danger btn-sm" onclick="deleteStudent(<?= $studentID ?>)">&#10006;</button>
                                         </div>
@@ -184,7 +179,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- Add Modal -->
@@ -194,7 +188,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="addStudent">Add Student</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -208,7 +202,7 @@
                             <input type="text" class="form-control" id="studentCourse" name="course_section">
                         </div>
                         <div class="form-group">
-                            <label for="studentName">Your Email:</label>
+                            <label for="studentEmail">Your Email:</label>
                             <input type="text" class="form-control" id="studentEmail" name="course_email">
                         </div>
 
@@ -237,7 +231,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="updateStudent">Update Student</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -251,13 +245,13 @@
                             <label for="updateStudentCourse">Course and Section:</label>
                             <input type="text" class="form-control" id="updateStudentCourse" name="course_section">
                         </div>
-                          <div class="form-group">
-                            <label for="studentName">Your Email:</label>
+                        <div class="form-group">
+                            <label for="updateStudentEmail">Your Email:</label>
                             <input type="text" class="form-control" id="updateStudentEmail" name="course_email">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-dark">Add</button>
+                            <button type="submit" class="btn btn-dark">Update Student</button>
                         </div>
                     </form>
                 </div>
@@ -265,76 +259,60 @@
         </div>
     </div>
     
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
-
-    <!-- Data Table -->
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
-
+    
     <script>
-
-        function printQR() {
-        
-        printWindow.print();
-    }
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#studentTable').DataTable();
         });
 
-        function updateStudent(id) {
-            $("#updateStudentModal").modal("show");
-
-            let updateStudentId = $("#studentID-" + id).text();
-            let updateStudentName = $("#studentName-" + id).text();
-            let updateStudentCourse = $("#studentCourse-" + id).text();
-            let updateStudentEmail = $("#-" + id).text();
-
-
-            $("#updateStudentId").val(updateStudentId);
-            $("#updateStudentName").val(updateStudentName);
-            $("#updateStudentEmail").val(email);
-            $("#updateStudentCourse").val(updateStudentCourse);
+        function deleteStudent(studentID) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect to delete_student.php with the student ID
+                    window.location.href = `./endpoint/delete_student.php?id=${studentID}`;
+                }
+            });
         }
 
-        function deleteStudent(id) {
-            if (confirm("Do you want to delete this student?")) {
-                window.location = "./endpoint/delete-student.php?student=" + id;
-            }
-        }
-
-        function generateRandomCode(length) {
-            const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-            let randomString = '';
-
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                randomString += characters.charAt(randomIndex);
-            }
-
-            return randomString;
+        function updateStudent(studentID) {
+            // Fill the update form with the selected student's data
+            let studentName = $(`#studentName-${studentID}`).text();
+            let studentCourse = $(`#studentCourse-${studentID}`).text();
+            
+            // Set values to the modal fields
+            $('#updateStudentId').val(studentID);
+            $('#updateStudentName').val(studentName);
+            $('#updateStudentCourse').val(studentCourse);
+            
+            // Show the update modal
+            $('#updateStudentModal').modal('show');
         }
 
         function generateQrCode() {
-            const qrImg = document.getElementById('qrImg');
+            const studentName = document.getElementById("studentName").value;
+            const studentCourse = document.getElementById("studentCourse").value;
 
-            let text = generateRandomCode(10);
-            $("#generatedCode").val(text);
+            if (studentName && studentCourse) {
+                const qrData = `${studentName} | ${studentCourse}`;
+                const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}`;
+                document.getElementById("qrImg").src = qrCodeUrl;
+                document.getElementById("generatedCode").value = qrCodeUrl;
 
-            if (text === "") {
-                alert("Please enter text to generate a QR code.");
-                return;
+                $('.qr-con').show();
+                $('.modal-close').show();
             } else {
-                const apiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(text)}`;
-
-                qrImg.src = apiUrl;
-                document.getElementById('studentName').style.pointerEvents = 'none';
-                document.getElementById('studentCourse').style.pointerEvents = 'none';
-                document.querySelector('.modal-close').style.display = '';
-                document.querySelector('.qr-con').style.display = '';
-                document.querySelector('.qr-generator').style.display = 'none';
+                Swal.fire('Error', 'Please enter both Name and Course & Section', 'error');
             }
         }
     </script>

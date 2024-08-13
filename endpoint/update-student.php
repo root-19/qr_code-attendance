@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt->execute();
 
-            header("Location: ./masterlist.php");
+            header("Location: ../masterlist.php");
             exit();
         } catch (PDOException $e) {
             echo "Error: " . htmlspecialchars($e->getMessage());
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo "<script>
                 alert('Please fill in all fields!');
-                window.location.href = 'http://localhost/qr-code-attendance-system/masterlist.php';
+                window.location.href = '../masterlist.php';
               </script>";
     }
 }

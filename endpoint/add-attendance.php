@@ -5,9 +5,12 @@ use PHPMailer\PHPMailer\Exception;
 require '../vendor/autoload.php';
 include("../conn/conn.php");
 
+session_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['qr_code'])) {
         $qrCode = $_POST['qr_code'];
+
         $selectStmt = $conn->prepare("SELECT tbl_student_id, student_name, course_email FROM tbl_student WHERE generated_code = :generated_code");
         $selectStmt->bindParam(":generated_code", $qrCode, PDO::PARAM_STR);
 
@@ -34,10 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $mail->isSMTP();
                         $mail->Host = 'smtp.gmail.com';
                         $mail->SMTPAuth = true;
-                        $mail->Username = 'wasieacuna@gmail.com';
-                        $mail->Password = '';
-                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                        $mail->Port = 587;
+                        $mail->Username = 'wasieacuna@gmail.com'; 
+                        $mail->Password = 'qipc vais smfq rwim'; 
+                        $mail->SMTPSecure = 'ssl'; 
+                        $mail->Port = 465;
 
                         //Recipients
                         $mail->setFrom('wasieacuna@gmail.com', 'Attendance System');
@@ -46,31 +49,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Content
                         $mail->isHTML(true);
                         $mail->Subject = 'Attendance Recorded';
-                        $mail->Body    = "Hi $studentName,<br><br>Your attendance has been successfully recorded on $timeIn.<br><br>Regards,<br>Attendance System";
+                       $mail->Body = "Hi $studentName,<br><br>We are pleased to inform you that your attendance has been successfully recorded at $timeIn.<br><br>Best regards,<br>Attendance System";
+
 
                         $mail->send();
                     } catch (Exception $e) {
                         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                     }
 
-                    header("Location: http://localhost/qr-code-attendance-system/index.php");
+                    header("Location: ../index.php");
                     exit();
                 } catch (PDOException $e) {
                     echo "Error: " . $e->getMessage();
                 }
             } else {
-                echo "No student found in QR Code";
+                echo "No student found for the provided QR code.";
             }
         } else {
             echo "Failed to execute the statement.";
         }
     } else {
-        echo "
-            <script>
+        echo "<script>
                 alert('Please fill in all fields!');
-                window.location.href = 'http://localhost/qr-code-attendance-system/index.php';
-               //qipc vais smfq rwim'
-                </script>";
+                window.location.href = '../index.php';
+              </script>";
     }
 }
 ?>

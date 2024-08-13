@@ -1,0 +1,6 @@
+# .gitignore file
+
+.env
+vendor
+composer.json
+composer.locks
