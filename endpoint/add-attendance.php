@@ -71,8 +71,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo "<script>
                 alert('Please fill in all fields!');
+<<<<<<< HEAD
                 window.location.href = '../index.php';
               </script>";
+=======
+                window.location.href = 'http://localhost/qr-code-attendance-system/index.php';
+             
+                </script>";
+>>>>>>> 211885b7b3acd1c2f4c8df053bfb153be7f126ce
     }
 }
 ?>
